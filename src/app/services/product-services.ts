@@ -14,15 +14,13 @@ export class ProductService extends ServiceBase {
     return prodResp.json();
   }
 
-  static async getProductById(id: number) {
-    const prodResp = await fetch(this.getUrl(`/products/${id}`), {
-      cache: "no-store",
-    });
+ static async getProductById(id: number) {
+  const res = await fetch(this.getUrl(`/products/${id}`), {
+    cache: "no-store",
+  });
 
-    if (!prodResp.ok) {
-      throw new Error(`Failed to fetch product: ${prodResp.status}`);
-    }
+  if (!res.ok) throw new Error(`API Error: ${res.status}`);
 
-    return prodResp.json();
-  }
+  return res.json();
+}
 }
