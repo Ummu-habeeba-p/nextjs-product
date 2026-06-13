@@ -1,15 +1,14 @@
 import Image from "next/image";
 import styles from "./page.module.css";
+import Banner from "./components/banner/Banner";
+import Offer from "./components/offer/Offer";
+
 
 export default function Home() {
-  return (
+  return (   
     <div>
-    <h1>{"This is home page"}</h1>
-      
- 
-<Image src="/image/w1.jpg" alt="watch"  width={200} height={300}/>
-<Image src="/image/w2.jpg" alt="watch"  width={200} height={300}/>
-
-    </div>
+      <Banner/>
+      <Offer/>
+      </div>
   );
 }
