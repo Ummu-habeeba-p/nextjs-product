@@ -27,6 +27,7 @@ function ProductCard(props:any) {
         </Link>
 
         <p>${prod.price}</p>
+        
       </div>
     </div>
   )

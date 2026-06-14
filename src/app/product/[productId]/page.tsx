@@ -1,46 +1,25 @@
+// app/product/[productId]/page.tsx
 import { ProductService } from "@/app/services/product-services";
+import ProductView from "./ProductView";
 
-export default async function ProductDetails({
+export default async function Page({
   params,
 }: {
   params: Promise<{ productId: string }>;
 }) {
   const { productId } = await params;
 
-  console.log("productId =", productId);
+  const id = Number(productId);
 
-  const product = await ProductService.getProductById(
-    Number(productId)
-  );
+  if (isNaN(id)) {
+    return <h2>Invalid product ID</h2>;
+  }
+
+  const product = await ProductService.getProductById(id);
 
   if (!product) {
     return <h2>Product not found</h2>;
   }
 
-  return (
-    <div className="container mt-4">
-      <div className="row">
-        <div className="col-md-6">
-          <img
-            src={product.image}
-            alt={product.title}
-            style={{
-              width: "100%",
-              maxHeight: "400px",
-              objectFit: "contain",
-            }}
-          />
-        </div>
-
-        <div className="col-md-6">
-          <h2>{product.title}</h2>
-          <h4 className="text-success">${product.price}</h4>
-          <p>{product.description}</p>
-          <p>
-            <b>Category:</b> {product.category}
-          </p>
-        </div>
-      </div>
-    </div>
-  );
+  return <ProductView product={product} />;
 }

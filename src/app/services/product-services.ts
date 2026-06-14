@@ -2,33 +2,45 @@ import { ServiceBase } from "./service-base";
 
 export class ProductService extends ServiceBase {
   static async getProducts() {
-  const res = await fetch(this.getUrl("/products"));
-  const data = await res.json();
-  return data.products;
-}
-
-static async getProductById(id: number) {
-  try {
-    const url = this.getUrl(`/products/${id}`);
-
-    console.log("URL:", url);
-
-    const res = await fetch(url, {
+    const res = await fetch(this.getUrl("/products"), {
       cache: "no-store",
     });
 
-    console.log("Status:", res.status);
+    if (!res.ok) throw new Error("Failed to fetch products");
 
-    const text = await res.text();
-
-    console.log("Response:", text);
-
-    if (!text) return null;
-
-    return JSON.parse(text);
-  } catch (error) {
-    console.error(error);
-    return null;
+    return res.json();
   }
-}
+
+  static async getProductById(id: number) {
+    try {
+      if (!Number.isFinite(id)) {
+        console.error("Invalid product ID:", id);
+        return null;
+      }
+
+      const url = this.getUrl(`/products/${id}`);
+
+      console.log("URL:", url);
+
+      const res = await fetch(url, {
+        cache: "no-store",
+      });
+
+      console.log("Status:", res.status);
+
+      if (!res.ok) {
+        console.error("API error");
+        return null;
+      }
+
+      const data = await res.json();
+
+      console.log("Response:", data);
+
+      return data;
+    } catch (error) {
+      console.error("Fetch error:", error);
+      return null;
+    }
+  }
 }
