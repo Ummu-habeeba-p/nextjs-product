@@ -16,7 +16,11 @@ export class ProductService extends ServiceBase {
 
 static async getProductById(id: number) {
   try {
-    const res = await fetch(this.getUrl(`/products/${id}`), {
+    const url = this.getUrl(`/products/${id}`);
+
+    console.log("Fetching:", url);
+
+    const res = await fetch(url, {
       cache: "no-store",
     });
 
@@ -24,11 +28,9 @@ static async getProductById(id: number) {
 
     const text = await res.text();
 
-    console.log("Response body:", text);
+    console.log("Body:", text.substring(0, 200));
 
-    if (!text) return null;
-
-    return JSON.parse(text);
+    return null;
   } catch (err) {
     console.error(err);
     return null;
