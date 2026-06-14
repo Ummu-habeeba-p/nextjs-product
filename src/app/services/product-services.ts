@@ -6,20 +6,18 @@ export class ProductService extends ServiceBase {
       cache: "no-store",
     });
 
-    if (!res.ok) throw new Error("Failed to fetch products");
+    if (!res.ok) {
+      throw new Error("Failed to fetch products");
+    }
 
     return res.json();
   }
 
   static async getProductById(id: number) {
     try {
-      if (!Number.isFinite(id)) {
-        console.error("Invalid product ID:", id);
-        return null;
-      }
+      if (!Number.isFinite(id)) return null;
 
       const url = this.getUrl(`/products/${id}`);
-
       console.log("URL:", url);
 
       const res = await fetch(url, {
@@ -29,18 +27,18 @@ export class ProductService extends ServiceBase {
       console.log("Status:", res.status);
 
       if (!res.ok) {
-        console.error("API error");
-        return null;
+        console.warn("API failed, using fallback");
+
+        const fallback = await this.getProducts();
+        return fallback.find((p: any) => p.id === id) || null;
       }
 
-      const data = await res.json();
-
-      console.log("Response:", data);
-
-      return data;
+      return await res.json();
     } catch (error) {
       console.error("Fetch error:", error);
-      return null;
+
+      const fallback = await this.getProducts();
+      return fallback.find((p: any) => p.id === id) || null;
     }
   }
 }
