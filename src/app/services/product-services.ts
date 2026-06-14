@@ -14,18 +14,28 @@ export class ProductService extends ServiceBase {
     return prodResp.json();
   }
 
-static async getProductById(id: number): Promise<any | null> {
+static async getProductById(id: number) {
   try {
     const res = await fetch(this.getUrl(`/products/${id}`), {
       cache: "no-store",
     });
 
+    console.log("Status:", res.status);
+
     if (!res.ok) {
       return null;
     }
 
+    const contentType = res.headers.get("content-type");
+
+    if (!contentType?.includes("application/json")) {
+      console.log("Non-JSON response");
+      return null;
+    }
+
     return await res.json();
-  } catch {
+  } catch (err) {
+    console.error("Fetch error:", err);
     return null;
   }
 }
