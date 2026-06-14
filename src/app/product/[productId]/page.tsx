@@ -21,7 +21,7 @@ export default async function ProductDetails({
       <div className="row">
         <div className="col-md-6">
           <img
-            src={product.image}
+             src={product.images?.[0]}
             alt={product.title}
             style={{
               width: "100%",
