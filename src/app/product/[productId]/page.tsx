@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
+import CartButton from "@/app/components/cartButton/CartButton";
 
 export default function ProductDetails() {
   const { productId } = useParams();
@@ -31,8 +32,11 @@ export default function ProductDetails() {
           <p>{product.description}</p>
           <p><b>Category:</b> {product.category}</p>
 
-          <div className="d-flex gap-2 mt-4">
-            <button className="btn btn-primary">Add to cart</button>
+          {/* <div className="d-flex gap-2 mt-4">
+            <button className="btn btn-primary">Add to cart</button> */}
+            <div className="d-flex gap-2 mt-4">
+            <CartButton product={product}/>
+
           </div>
         </div>
       </div>
