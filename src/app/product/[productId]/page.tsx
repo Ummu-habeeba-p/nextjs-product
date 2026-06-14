@@ -1,15 +1,14 @@
-
-  import { ProductService } from "@/app/services/product-services";
+import { ProductService } from "@/app/services/product-services";
 
 export default async function ProductDetails({
   params,
 }: {
-  params: Promise<{ productId: string }>;
+  params: Promise<{ productid: string }>;
 }) {
-  const { productId } = await params;
+  const { productid } = await params;
 
-  const product: any = await ProductService.getProductById(
-    Number(productId)
+  const product = await ProductService.getProductById(
+    Number(productid)
   );
 
   if (!product) {
@@ -21,7 +20,7 @@ export default async function ProductDetails({
       <div className="row">
         <div className="col-md-6">
           <img
-             src={product.images?.[0]}
+            src={product.image}
             alt={product.title}
             style={{
               width: "100%",

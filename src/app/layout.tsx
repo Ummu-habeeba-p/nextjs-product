@@ -33,9 +33,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} d-flex flex-column min-vh-100`}
       >
-        <div className="container flex-grow-1">
+       
           <Nav />
-
+ <div className="container flex-grow-1">
     
 <BootstrapClient />
           {children}
