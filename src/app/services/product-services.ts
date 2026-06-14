@@ -20,14 +20,17 @@ static async getProductById(id: number) {
       cache: "no-store",
     });
 
-    if (!res.ok) {
-      console.log("API failed:", res.status);
-      return null;
-    }
+    console.log("Status:", res.status);
 
-    return await res.json();
+    const text = await res.text();
+
+    console.log("Response body:", text);
+
+    if (!text) return null;
+
+    return JSON.parse(text);
   } catch (err) {
-    console.log("Fetch error:", err);
+    console.error(err);
     return null;
   }
 }

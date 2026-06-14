@@ -1,6 +1,5 @@
 
-    'use client'
-    import { ProductService } from "@/app/services/product-services";
+   import { ProductService } from "@/app/services/product-services";
 
 export default async function ProductDetails({
   params,
@@ -10,6 +9,12 @@ export default async function ProductDetails({
   const product = await ProductService.getProductById(
     Number(params.productId)
   );
+
+  if (!product) {
+    return <h2>Product not found</h2>;
+  }
+
+  
 
   return (
     <div className="container mt-4">
