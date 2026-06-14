@@ -3,12 +3,14 @@ import { ProductService } from "@/app/services/product-services";
 export default async function ProductDetails({
   params,
 }: {
-  params: Promise<{ productid: string }>;
+  params: Promise<{ productId: string }>;
 }) {
-  const { productid } = await params;
+  const { productId } = await params;
+
+  console.log("productId =", productId);
 
   const product = await ProductService.getProductById(
-    Number(productid)
+    Number(productId)
   );
 
   if (!product) {
