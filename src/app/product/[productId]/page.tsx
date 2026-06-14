@@ -1,29 +1,41 @@
-import { ProductService } from "@/app/services/product-services";
-import ProductView from "./ProductView";
+ "use client";
 
-export default async function Page({
-  params,
-}: {
-  params: Promise<{ productId: string }>;
-}) {
-  try {
-    const { productId } = await params;
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 
-    const id = Number(productId);
+export default function ProductDetails() {
+  const { productId } = useParams();
+  const [product, setProduct] = useState<any>(null);
 
-    if (isNaN(id)) {
-      return <h2>Invalid product ID</h2>;
-    }
+  useEffect(() => {
+    fetch(`https://fakestoreapi.com/products/${productId}`)
+      .then((res) => res.json())
+      .then(setProduct);
+  }, [productId]);
 
-    const product = await ProductService.getProductById(id);
+  if (!product) return <h2>Loading...</h2>;
+  return (
+    <div className="container mt-4">
+      <div className="row">
+        <div className="col-md-6">
+          <img
+            src={product.image}
+            alt={product.title}
+            style={{ width: "100%", maxHeight: "400px", objectFit: "contain" }}
+          />
+        </div>
 
-    if (!product) {
-      return <h2>Product not found</h2>;
-    }
+        <div className="col-md-6">
+          <h2>{product.title}</h2>
+          <h4>${product.price}</h4>
+          <p>{product.description}</p>
+          <p><b>Category:</b> {product.category}</p>
 
-    return <ProductView product={product} />;
-  } catch (error) {
-    console.error("Page error:", error);
-    return <h2>Error loading product</h2>;
-  }
+          <div className="d-flex gap-2 mt-4">
+            <button className="btn btn-primary">Add to cart</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
