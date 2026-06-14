@@ -1,20 +1,20 @@
 
-   import { ProductService } from "@/app/services/product-services";
+  import { ProductService } from "@/app/services/product-services";
 
 export default async function ProductDetails({
   params,
 }: {
-  params: { productId: string };
+  params: Promise<{ productId: string }>;
 }) {
-  const product = await ProductService.getProductById(
-    Number(params.productId)
+  const { productId } = await params;
+
+  const product: any = await ProductService.getProductById(
+    Number(productId)
   );
 
   if (!product) {
     return <h2>Product not found</h2>;
   }
-
-  
 
   return (
     <div className="container mt-4">
@@ -23,7 +23,11 @@ export default async function ProductDetails({
           <img
             src={product.image}
             alt={product.title}
-            style={{ width: "100%", maxHeight: "400px", objectFit: "contain" }}
+            style={{
+              width: "100%",
+              maxHeight: "400px",
+              objectFit: "contain",
+            }}
           />
         </div>
 
